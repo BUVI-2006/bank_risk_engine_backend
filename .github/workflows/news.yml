@@ -28,4 +28,4 @@ jobs:
           MARKET_API_KEY: ${{ secrets.MARKET_API_KEY }}
           FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
         run: |
-          python news_job.py
+          python main.py
