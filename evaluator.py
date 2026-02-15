@@ -54,7 +54,64 @@ def lexrank_summary(text,sentence_count=1):
     return "".join(str(sentence) for sentence in summary)
 
 
+def liquidity_threshold(liquidtiy_value):
 
+   SAFE=1.0
+   WARNING=0.8
+   CRITICAL=0.6
+
+   if liquidtiy_value>=SAFE:
+      liquidity_score=10
+
+   elif liquidtiy_value>=WARNING:
+        liquidity_score=40
+    
+   elif liquidtiy_value>=CRITICAL:
+        liquidity_score=70
+
+   else:
+        liquidity_score=95
+
+   return liquidity_score
+
+
+def drawdown_threshold(drawdown_value):
+  SAFE = -0.05        
+  WARNING = -0.15     
+  CRITICAL = -0.25   
+    
+  if drawdown_value >= SAFE:  
+        drawdown_score = 10
+  elif drawdown_value >= WARNING:
+        drawdown_score = 40
+  elif drawdown_value >= CRITICAL:
+        drawdown_score = 70
+  else:
+        drawdown_score = 95  
+    
+  return drawdown_score
+
+
+def stress_threshold(stress_value):
+   SAFE=0.2
+   WARNING=0.5
+   CRITICAL=0.8
+
+   if stress_value<=SAFE:
+       stress_score=10
+   
+   elif stress_value<=WARNING:
+       stress_score=40
+
+   elif stress_value<=CRITICAL:
+       stress_score=70
+
+   else:
+       stress_score=95
+
+   return stress_score
+
+      
 
 class PredictRequest(BaseModel):
    stock:str
@@ -87,6 +144,16 @@ def forecast_series(data:PredictRequest):
 
    x_values=merge_data['Date']
 
+   liquidity_score=liquidity_threshold(liquidity_forecast.tolist()[-1])
+   drawdown_score=drawdown_threshold(drawdown_forecast.tolist()[-1])
+   stress_score=stress_threshold(stress_forecast.tolist()[-1])
+
+   # According to bank rule for risk calcualtion in BASEL III
+
+   risk_score=(liquidity_score * 0.40 + 
+                  stress_score * 0.35 + 
+                  drawdown_score * 0.25)
+
 
    return {
       "liquidity":{
@@ -100,20 +167,10 @@ def forecast_series(data:PredictRequest):
       "drawdown":{
          "x":x_values,
          "y":drawdown_forecast.tolist()
-      }  
+      } ,
+      "risk_score":risk_score
       
       }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -216,6 +273,8 @@ def data_computer(stock,db):
 
     for col in cols: 
         merge_data[f'{col}_lag1']=merge_data[col].shift(1)
+
+    merge_data=merge_data.dropna()
 
     return merge_data
 
