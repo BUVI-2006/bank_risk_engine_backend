@@ -1,2 +1,9 @@
+fastapi
+uvicorn
+pandas
+yfinance
+nltk
+sumy
 firebase-admin
 python-dotenv
+pydantic
