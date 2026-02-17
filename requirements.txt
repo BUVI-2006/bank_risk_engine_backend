@@ -7,3 +7,6 @@ sumy
 firebase-admin
 python-dotenv
 pydantic
+statsmodels
+scikit-learn
+huggingface-hub
