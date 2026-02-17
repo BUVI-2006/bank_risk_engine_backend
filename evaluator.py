@@ -27,7 +27,9 @@ load_dotenv()
 
 app=FastAPI()
 
-firebase_key=os.environ.get('FIREBASE_KEY')
+key=os.environ.get('FIREBASE_KEY')
+firebase_key=json.loads(key)
+
 
 cred=credentials.Certificate(firebase_key)
 
