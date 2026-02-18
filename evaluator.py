@@ -17,6 +17,7 @@ import pickle
 import json
 from huggingface_hub import InferenceClient
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 
 
@@ -40,11 +41,9 @@ HF_TOKEN=os.environ.get('HF_TOKEN')
    
 client=InferenceClient(token=HF_TOKEN)
 
-nltk.download('vader_lexicon', quiet=True)
-nltk.download('punkt', quiet=True)
-nltk.download('stopwords', quiet=True)
 
-from nltk.sentiment import SentimentIntensityAnalyzer
+
+
 
 
 
