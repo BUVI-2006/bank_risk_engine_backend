@@ -33,14 +33,12 @@ def news_store(db):
     url = 'https://www.alphavantage.co/query'
 
     now = datetime.now(timezone.utc)
-    today_10am = now.replace(hour=10, minute=0, second=0, microsecond=0)
+    yesterday = now - timedelta(days=1)
 
-    if now.hour < 10:
-        today_10am -= timedelta(days=1)
 
-    yesterday_10am = today_10am - timedelta(days=1)
-    time_from = yesterday_10am.strftime('%Y%m%dT%H%M')
-    time_to = today_10am.strftime('%Y%m%dT%H%M')
+   
+    time_from = yesterday.strftime('%Y%m%dT%H%M')
+    time_to = today.strftime('%Y%m%dT%H%M')
 
     for ticker in tickers:
         params = {
