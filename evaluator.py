@@ -17,6 +17,8 @@ import pickle
 import json
 from huggingface_hub import InferenceClient
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 NLTK_DIR="/opt/render/nltk_data"     # Forcing the NLTK files to be stored in directory
@@ -41,6 +43,19 @@ load_dotenv()
 
 
 app=FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500/index.html",  
+        "https://news-automation-jv0f.onrender.com/"  
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 key=os.environ.get('FIREBASE_KEY')
 firebase_key=json.loads(key)
