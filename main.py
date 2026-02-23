@@ -79,6 +79,7 @@ def news_store(db):
 
                 
                 db.collection('news').document(ticker).collection("articles").document(doc_id).set(clean_data)
+                print(f"confirmed: {ticker} article written to this path: news/{ticker}/articles/{doc_id}")
             
             print(f"Successfully processed {ticker}")
             
