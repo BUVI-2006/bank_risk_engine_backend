@@ -48,8 +48,9 @@ app=FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:5500/index.html",  
-        "https://news-automation-jv0f.onrender.com/"  
+        "http://127.0.0.1:5500",      # No /index.html
+        "http://localhost:5500",
+        "https://news-automation-jv0f.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
