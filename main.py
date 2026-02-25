@@ -38,7 +38,7 @@ def news_store(db):
 
    
     time_from = yesterday.strftime('%Y%m%dT%H%M')
-    time_to = today.strftime('%Y%m%dT%H%M')
+    time_to = now.strftime('%Y%m%dT%H%M')
 
     for ticker in tickers:
         params = {
