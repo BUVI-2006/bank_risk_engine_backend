@@ -316,7 +316,7 @@ def forecast_series(data:PredictRequest):
    stress_forecast=stress_model.forecast(steps=len(merge_data),exog=merge_data[['Volume_spike_lag1', 'Gap_lag1','Sentiment_lag1','Drawdown_lag1','Stress_lag1']])
    drawdown_forecast=drawdown_model.forecast(steps=len(merge_data),exog=merge_data[['Trend_lag1','Volume_spike_lag1', 'Gap_lag1','Sentiment_lag1', 'days_since_news_lag1','Drawdown_lag1']])
 
-   x_values=merge_data['Date']
+   x_values=list(merge_data['Date'].values)
 
    last_liq_score=liquidity_forecast.tolist()[-1]
    last_draw_score=drawdown_forecast.tolist()[-1]
