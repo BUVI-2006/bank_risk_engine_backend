@@ -2,17 +2,22 @@
 
 **Real-Time News + Time-Series ML Risk Intelligence for US Regional Banks**
 
+This is not a prototype model. It is a live, real time bank risk prediction system that integrates current stock market data and financial news to generate dynamic liquidity, stress, and drawdown risk scores.
+
+The system operates on real inputs and produces actionable risk intelligence designed to support real world financial decisions.
+
+
 ## Overview
 
-This project is a real-time bank risk early-warning system designed to detect emerging liquidity stress, drawdown risk, and systemic pressure signals using:
+This project is a real-time bank risk early warning system designed to detect emerging liquidity stress, drawdown risk, and systemic pressure signals using:
 
 * Automated financial news ingestion
 * Sentiment analysis
-* Market-aligned time-series feature engineering
-* Bank-specific ML models trained on large-scale historical data
+* Market aligned time series feature engineering
+* Bank specific ML models trained on large scale historical data
 * Structured risk reasoning via a small language model
 
-Unlike traditional models that rely purely on historical price signals, this engine integrates **live news flow with market data** to generate forward-looking risk assessments suitable for real-time decision-making.
+Unlike traditional models that rely purely on historical price signals, this engine integrates **live news flow with market data** to generate forward looking risk assessments suitable for real time decision making.
 
 This system was built over two months of focused development and model training.
 
@@ -28,7 +33,7 @@ The engine currently monitors five US regional banks:
 * ABCB
 * ACNB
 
-Each bank has its own trained time-series model suite.
+Each bank has its own trained time series model suite.
 
 Total trained time-series models: **15**
 (3 models per bank × 5 banks)
@@ -48,7 +53,7 @@ Total trained time-series models: **15**
 
 This ensures a continuously updated news pipeline aligned with market activity.
 
-This is not a static dataset pipeline — it is an active ingestion workflow.
+This is not a static dataset pipeline but an active ingestion workflow.
 
 ---
 
@@ -64,34 +69,34 @@ User provides:
 
 * `bank_name`
 
-#### Step 2 — News Retrieval
+#### Step 2 - News Retrieval
 
 * Fetches relevant stored news from Firebase
 * Aligns news with publication timestamps
 
-#### Step 3 — Market Data Retrieval
+#### Step 3 - Market Data Retrieval
 
 * Retrieves historical stock prices using Yahoo Finance
 * Aligns stock price data with news dates
 
-#### Step 4 — Sentiment Computation
+#### Step 4 - Sentiment Computation
 
 * Computes sentiment scores for retrieved news
 * Generates structured sentiment features
 
-#### Step 5 — Feature Engineering
+#### Step 5 - Feature Engineering
 
 * Merges sentiment signals with stock data
-* Computes time-series features required for prediction
+* Computes time series features required for prediction
 
   * Volatility
   * Drawdowns
   * Volume anomalies
   * Trend dynamics
   * Price gaps
-  * Liquidity-aligned indicators
+  * Liquidity aligned indicators
 
-#### Step 6 — Model Inference
+#### Step 6 - Model Inference
 
 Each bank folder contains:
 
@@ -102,8 +107,8 @@ Each bank folder contains:
 All models are:
 
 * Trained on 200,000+ rows of historical bank stock data
-* Derived from the FNSpid dataset
-* Source dataset: `sabareesh888/fnspid` on Hugging Face
+* Derived from the FNSpid dataset from Hugging Face
+* Source dataset: `sabareesh88/FNSPID_nasdaq` on Hugging Face
 
 Models are stored as binary `.pkl` files.
 
@@ -117,14 +122,14 @@ The final risk result is passed through:
 
 `meta-llama/Llama-3.2-3B-Instruct`
 
-This small language model is used strictly for:
+This small language model(SLM) is used strictly for:
 
 * Structured explanation
 * Financial reasoning articulation
-* Clear decision-ready output formatting
+* Clear decision ready output formatting
 
 It does not perform prediction.
-It interprets model outputs and produces human-readable analysis.
+It interprets model outputs and produces human readable analysis.
 
 ---
 
