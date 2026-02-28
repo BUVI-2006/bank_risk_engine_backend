@@ -296,7 +296,7 @@ def data_computer(stock,db):
 
 
 
- def forecast_series(bank_name):
+def forecast_series(bank_name):
    stock=bank_name
    db=firestore.client()
 
