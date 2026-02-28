@@ -18,6 +18,7 @@ import json
 from huggingface_hub import InferenceClient
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fastapi.middleware.cors import CORSMiddleware
+from cachetools import TTLCache
 
 
 
@@ -72,14 +73,7 @@ HF_TOKEN=os.environ.get('HF_TOKEN')
 
    
 client=InferenceClient(token=HF_TOKEN)
-
-
-
-
-
-
-
-
+risk_cache=TTLCache(maxsize=100,ttl=1800)    # Cache been held for 30 minutes.
 
 
 @app.get('/')
@@ -88,6 +82,18 @@ def index():
    return {
       'Instruction':"end point returns risk scores"
    }
+
+
+
+@app.post('/risk/{bank_name}')
+def get_risk(bank_name: str):
+    if bank_name in risk_cache:
+        return risk_cache[bank_name]
+    
+    result = forecast_series(bank_name)
+    risk_cache[bank_name] = result
+    return result
+
 
 
 def lexrank_summary(text,sentence_count=1):
@@ -288,17 +294,10 @@ def data_computer(stock,db):
     return merge_data
       
 
-class PredictRequest(BaseModel):
-   stock:str
 
 
-
-# Just import the time series model and evaluate prediction under this ....
-@app.post("/predict")      # from post , only stock is given ==> 
-def forecast_series(data:PredictRequest):
-   data=data.model_dump()
-   stock=data['stock']
-
+ def forecast_series(bank_name):
+   stock=bank_name
    db=firestore.client()
 
    merge_data=data_computer(stock=stock,db=db)
@@ -410,10 +409,8 @@ def forecast_series(data:PredictRequest):
 
 
 
-
-
 if __name__=="__main__":
-   uvicorn.run(app,host="0.0.0.0",port=int(os.environ.get("PORT",5000)),reload=True)   # Railway assigns a dynamic port 
+   uvicorn.run(app,host="0.0.0.0",port=int(os.environ.get("PORT",5000)),reload=True)   # Dynamic port 
 
 
    
