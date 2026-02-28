@@ -10,3 +10,4 @@ pydantic
 statsmodels
 scikit-learn
 huggingface-hub
+cachetools
