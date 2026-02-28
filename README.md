@@ -63,7 +63,7 @@ This is not a static dataset pipeline but an active ingestion workflow.
 
 When a user selects a bank, the system executes the following pipeline:
 
-#### Step 1 — Input
+#### Step 1 - Input
 
 User provides:
 
