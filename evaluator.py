@@ -52,7 +52,8 @@ app.add_middleware(
         "http://127.0.0.1:5500",     
         "http://127.0.0.1:5501",
         "https://news-automation-jv0f.onrender.com",
-        "https://bank-risk-engine-dashboard.vercel.app"
+        "https://bank-risk-engine-dashboard.vercel.app",
+        "https://bank-risk-engine-frontend.web.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
