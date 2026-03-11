@@ -15,10 +15,10 @@ from pydantic import BaseModel
 import uvicorn
 import pickle 
 import json
-from huggingface_hub import InferenceClient
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fastapi.middleware.cors import CORSMiddleware
 from cachetools import TTLCache
+from groq import Groq 
 
 
 
@@ -70,10 +70,9 @@ cred=credentials.Certificate(firebase_key)
 if not firebase_admin._apps:
      firebase_admin.initialize_app(cred)
 
-HF_TOKEN=os.environ.get('HF_TOKEN')
 
    
-client=InferenceClient(token=HF_TOKEN)
+client=Groq(api_key=os.getenv("API_KEY"))
 risk_cache=TTLCache(maxsize=100,ttl=1800)    # Cache been held for 30 minutes.
 
 
@@ -375,12 +374,13 @@ def forecast_series(bank_name):
    ]
 
 
-   response=client.chat_completion(
-       model="mistralai/Mistral-7B-Instruct-v0.3",
-       messages=messages,
-       max_tokens=500,
-       temperature=0.0
-   )
+   completion=client.chat.completions.create(
+           model="openai/gpt-oss-120b",
+           messages=messages,
+           temperature=0,
+           top_p=1,
+           max_completion_tokens=500
+    )
    
    
    
@@ -401,7 +401,7 @@ def forecast_series(bank_name):
       } ,
       "risk_score":risk_score,
 
-      "LLM_response":response.choices[0].message.content
+      "LLM_response":completion.choices[0].message.content  
       
       }
 
