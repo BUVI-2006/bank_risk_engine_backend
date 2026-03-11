@@ -376,7 +376,7 @@ def forecast_series(bank_name):
 
 
    response=client.chat_completion(
-       model="llama-3.1-70b-versatile",
+       model="mistralai/Mistral-7B-Instruct-v0.3",
        messages=messages,
        max_tokens=500,
        temperature=0.0
