@@ -345,7 +345,8 @@ def forecast_series(bank_name):
         - Return the analysis in a clean, structured format.
         - Use specific financial terminology (e.g., LCR, NSFR, Value-at-Risk).
         - If any score is critical, prefix the analysis with '!!! CRITICAL ALERT !!!'.
-        - Ensure the output is concise enough for a dashboard widget."""
+        - Ensure the output is concise enough for a dashboard widget.
+        - Ensure no emojis are used in the response . Maintain a professional tone ."""
     },
     {
         "role": "user", 
