@@ -340,48 +340,38 @@ def forecast_series(bank_name):
         "role": "system", 
         "content": """You are a Senior Bank Risk & Compliance Officer. 
         Your task is to analyze portfolio metrics against Basel III and internal liquidity standards.
-
-        STRICT OUTPUT RULES:
-        - Maximum 120 words total
-        - Each section must be 1–2 lines only
-        - Do NOT exceed the structure
-        - No explanations beyond given sections
-        - No repetition
         
         CRITICAL INSTRUCTIONS:
         - Return the analysis in a clean, structured format.
         - Use specific financial terminology (e.g., LCR, NSFR, Value-at-Risk).
-        - If any score is critical, prefix the analysis with 'CRITICAL ALERT'.
+        - If any score is critical, prefix the analysis with '!!! CRITICAL ALERT !!!'.
+        - Ensure the output is concise enough for a dashboard widget.
         - Ensure the output is concise enough for a dashboard widget.
         - Ensure no emojis are used in the response . Maintain a professional tone ."""
     },
     {
         "role": "user", 
         "content": f"""
-Analyze these live portfolio metrics:
+        Analyze these live portfolio metrics:
+        - Liquidity Ratio: {last_liq_score} (Internal Benchmark: >1.0)
+        - Max Drawdown: {formatted_drawdown}% (Limit: 15%)
+        - Stress Test Score: {formatted_stress} (Threshold: 70)
+        - Combined Risk Score: {risk_score}
 
-- Liquidity Ratio: {last_liq_score} (Internal Benchmark: >1.0)
-- Max Drawdown: {formatted_drawdown}% (Limit: 15%)
-- Stress Test Score: {formatted_stress} (Threshold: 70)
-- Combined Risk Score: {risk_score}
+        Output your response exactly in this structure:
+        ### 1. Executive Summary
+        [One sentence on overall health]
 
-STRICT FORMAT (DO NOT DEVIATE, KEEP IT SHORT):
+        ### 2. Metric Breakdown
+        - **Liquidity:** [Analysis]
+        - **Drawdown:** [Analysis]
+        - **Stress:** [Analysis]
 
-### 1. Executive Summary
-[Max 15 words]
-
-### 2. Metric Breakdown
-- **Liquidity:** [Max 12 words]
-- **Drawdown:** [Max 12 words]
-- **Stress:** [Max 12 words]
-
-### 3. Compliance & Action
-- **Status:** [One word]
-- **Priority:** [One word]
-- **Immediate Action:** [Max 2 steps, short phrases]
-
-End response immediately after this.
-"""
+        ### 3. Compliance & Action
+        - **Status:** [Compliant/Non-Compliant]
+        - **Priority:** [Low/Medium/High/Critical]
+        - **Immediate Action:** [Step 1, Step 2]
+        """
     }
    ]
 
@@ -389,9 +379,9 @@ End response immediately after this.
    completion=client.chat.completions.create(
            model="openai/gpt-oss-120b",
            messages=messages,
-           temperature=0.2,
+           temperature=0,
            top_p=1,
-           max_completion_tokens=220
+           max_completion_tokens=500
     )
    
    
