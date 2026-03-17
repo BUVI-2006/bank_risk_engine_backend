@@ -347,7 +347,8 @@ def forecast_series(bank_name):
         - If any score is critical, prefix the analysis with '!!! CRITICAL ALERT !!!'.
         - Ensure the output is concise enough for a dashboard widget.
         - Ensure the output is concise enough for a dashboard widget.
-        - Ensure no emojis are used in the response . Maintain a professional tone ."""
+        - Ensure no emojis are used in the response . Maintain a professional tone .
+        Do not include internal reasoning. Provide only the final structured output."""
     },
     {
         "role": "user", 
@@ -377,13 +378,15 @@ def forecast_series(bank_name):
 
 
    completion=client.chat.completions.create(
-           model="openai/gpt-oss-120b",
+           model="openai/gpt-oss-20b",
            messages=messages,
            temperature=0,
            top_p=1,
-           max_completion_tokens=500
+           max_completion_tokens=800
     )
    
+
+   print(completion)
    
    
 
