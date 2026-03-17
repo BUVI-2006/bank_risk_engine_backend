@@ -382,7 +382,7 @@ def forecast_series(bank_name):
            messages=messages,
            temperature=0,
            top_p=1,
-           max_completion_tokens=800
+           max_completion_tokens=1024
     )
    
 
